@@ -54,6 +54,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Assets\Scenes\Physics.cs" />
+    <Compile Include="Assets\MathDebugger\Debuggers\Vector3Debugger.cs" />
+    <Compile Include="Assets\MathDebugger\Internals\CameraDebugger.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
