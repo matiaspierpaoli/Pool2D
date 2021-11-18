@@ -521,6 +521,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c701fe00535f6064085feacae05bec9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 0
+  force: 1.5
+  mass: 0.16
+  gravity: 9.8
+  miu: 0.02
+  acceleration: 0
+  friction: 0
 --- !u!23 &1783629985
 MeshRenderer:
   m_ObjectHideFlags: 0

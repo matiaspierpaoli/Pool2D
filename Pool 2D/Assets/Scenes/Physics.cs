@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class Physics : MonoBehaviour
 {
-    [SerializeField]float speed = 1;
-    [SerializeField]float force = 3;
+    [SerializeField]float speed = 0;
+    [SerializeField]float force = 0.2f;
     [SerializeField]float mass = 1f;
     [SerializeField]float gravity = 9.8f;
     [SerializeField]float miu = 0.02f;
@@ -28,12 +28,12 @@ public class Physics : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Space))
         {
             acceleration = (force / mass);
-            speed = 1;
+            speed = 0;
         }
 
         acceleration -= friction;     
 
-        speed += acceleration;
+        speed += acceleration * Time.deltaTime;
 
         if (speed <= 0)
         {
@@ -41,7 +41,8 @@ public class Physics : MonoBehaviour
         }
 
 
-        transform.position +=Vector3.right * (speed * Time.deltaTime);
+
+        transform.position +=new Vector3(1,0,0) * (speed * Time.deltaTime);
         
     }
 }
