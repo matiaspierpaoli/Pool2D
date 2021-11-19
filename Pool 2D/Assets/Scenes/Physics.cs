@@ -12,7 +12,7 @@ public class Physics : MonoBehaviour
     [SerializeField]float miu = 0.02f;
     [SerializeField]float acceleration =0;
     [SerializeField]float friction =0;
-    [SerializeField] float radius = 2;
+    [SerializeField] public float radius = 2;
 
     // Start is called before the first frame update
     void Start()
@@ -50,5 +50,11 @@ public class Physics : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, radius);
+    }
+
+    public void OnCollision()
+    {
+        Debug.Log("Colision");
+        
     }
 }
