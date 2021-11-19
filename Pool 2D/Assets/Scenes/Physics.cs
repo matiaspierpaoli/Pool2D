@@ -12,6 +12,7 @@ public class Physics : MonoBehaviour
     [SerializeField]float miu = 0.02f;
     [SerializeField]float acceleration =0;
     [SerializeField]float friction =0;
+    [SerializeField] float radius = 2;
 
     // Start is called before the first frame update
     void Start()
@@ -25,6 +26,7 @@ public class Physics : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+      
         if(Input.GetKeyDown(KeyCode.Space))
         {
             acceleration = (force / mass);
@@ -40,9 +42,13 @@ public class Physics : MonoBehaviour
             speed = 0;
         }
 
-
-
         transform.position +=new Vector3(1,0,0) * (speed * Time.deltaTime);
         
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, radius);
     }
 }
