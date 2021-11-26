@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Physics : MonoBehaviour
+public class Physics : MonoBehaviour 
 {
     [SerializeField]float speed = 0;
     [SerializeField]float force = 0.2f;
@@ -42,7 +42,7 @@ public class Physics : MonoBehaviour
             speed = 0;
         }
 
-        transform.position +=new Vector3(1,0,0) * (speed * Time.deltaTime);
+        //transform.position += new Vector3(1,0,0) * (speed * Time.deltaTime);
         
     }
 
@@ -52,9 +52,25 @@ public class Physics : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, radius);
     }
 
-    public void OnCollision()
+    public void OnCollision(Physics other)
     {
-        Debug.Log("Colision");
-        
+        //if (other.tag == )
+        //{
+
+        //}
+
+        acceleration -= friction;
+
+        speed += acceleration * Time.deltaTime;
+
+        if (speed <= 0)
+        {
+            speed = 0;
+        }
+
+        other.transform.position -= new Vector3(1, 0, 0) * (speed * Time.deltaTime);
+
+
+
     }
 }
