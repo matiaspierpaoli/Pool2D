@@ -7,6 +7,7 @@ using UnityEngine;
 public class ColissionManager : MonoBehaviour
 {
     public List<Physics> Balls;
+    public List<Physics> Walls;
     public List<Physics> auxiliarBalls;
     private List<KeyValuePair<Physics, Physics>> collisionRegister;
     public bool collision;
@@ -20,6 +21,36 @@ public class ColissionManager : MonoBehaviour
         collision = false;
 
         collisionRegister = new List<KeyValuePair<Physics, Physics>>();
+    }
+
+    void CheckBallToWallCollision()
+    {
+        for (int i = 0; i < Balls.Count; i++)
+        {
+            for (int j = 0; j < Walls.Count; j++)
+            {
+                if (Balls[i].gameObject.transform.position.x == Walls[j].gameObject.transform.position.x)
+                {
+                    collisionRegister.Add(new KeyValuePair<Physics, Physics>(Balls[i], Walls[j]));
+                }                
+            }                        
+        }
+
+        resolveCollisionBallToWall();
+    }
+
+    void resolveCollisionBallToWall()
+    {
+        for (int i = 0; i < collisionRegister.Count; i++)
+        {
+            collisionRegister[i].Key.OnCollisionBallToWall(collisionRegister[i].Value);
+            collisionRegister[i].Value.OnCollisionBallToWall(collisionRegister[i].Key);
+        }
+
+
+
+
+        collisionRegister.Clear();
     }
 
     void CheckBallToBallCollission()
@@ -38,15 +69,17 @@ public class ColissionManager : MonoBehaviour
                     }
                 }               
             }                                  
-        }     
+        }
+
+        resolveCollisionBallToBall();
     }
 
-    void resolveCollision()
+    void resolveCollisionBallToBall()
     {
         for (int i = 0; i < collisionRegister.Count; i++)
         {
-            collisionRegister[i].Key.OnCollision(collisionRegister[i].Value);
-            collisionRegister[i].Value.OnCollision(collisionRegister[i].Key);
+            collisionRegister[i].Key.OnCollisionBallToBall(collisionRegister[i].Value);
+            collisionRegister[i].Value.OnCollisionBallToBall(collisionRegister[i].Key);
         }
 
        
@@ -58,8 +91,10 @@ public class ColissionManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        CheckBallToWallCollision();
+
         CheckBallToBallCollission();
-        resolveCollision();
+       
 
 
     }

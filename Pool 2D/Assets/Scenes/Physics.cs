@@ -12,7 +12,9 @@ public class Physics : MonoBehaviour
     [SerializeField]float miu = 0.02f;
     [SerializeField]float acceleration =0;
     [SerializeField]float friction =0;
-    [SerializeField] public float radius = 2;
+    [SerializeField]public float radius = 2;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -42,7 +44,7 @@ public class Physics : MonoBehaviour
             speed = 0;
         }
 
-        //transform.position += new Vector3(1,0,0) * (speed * Time.deltaTime);
+        transform.position += new Vector3(0,0,2) * (speed * Time.deltaTime);
         
     }
 
@@ -50,9 +52,11 @@ public class Physics : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, radius);
+        Gizmos.DrawWireCube(transform.position, transform.localScale);
     }
 
-    public void OnCollision(Physics other)
+
+    public void OnCollisionBallToBall(Physics other)
     {
         //if (other.tag == )
         //{
@@ -71,6 +75,11 @@ public class Physics : MonoBehaviour
         other.transform.position -= new Vector3(1, 0, 0) * (speed * Time.deltaTime);
 
 
+    }
+
+    public void OnCollisionBallToWall(Physics other)
+    {
+        other.transform.position -= new Vector3(0, 0, 2) * (speed * Time.deltaTime);
 
     }
 }
