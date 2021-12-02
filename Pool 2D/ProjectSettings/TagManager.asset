@@ -4,11 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - White Ball
-  - Striped Ball
-  - Solid Ball
   - Hole
   - Walls
+  - Ball
   layers:
   - Default
   - TransparentFX

@@ -57,6 +57,8 @@
     <Compile Include="Assets\MathDebugger\Debuggers\Vector3Debugger.cs" />
     <Compile Include="Assets\Scenes\Physics.cs" />
     <Compile Include="Assets\Scenes\ColissionManager.cs" />
+    <Compile Include="Assets\Scenes\HitBalls.cs" />
+    <Compile Include="Assets\Scenes\TableWall.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

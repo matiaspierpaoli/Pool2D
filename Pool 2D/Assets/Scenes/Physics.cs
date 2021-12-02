@@ -13,7 +13,13 @@ public class Physics : MonoBehaviour
     [SerializeField]float acceleration =0;
     [SerializeField]float friction =0;
     [SerializeField]public float radius = 2;
-
+    Vector3 direction;
+    bool isStatic;
+    float airFriction;
+    float airDensity=1.225f;
+    float airFrictionConstant=0.000000667f;
+    Vector3 normal;
+    float depth;
 
 
     // Start is called before the first frame update
@@ -23,19 +29,15 @@ public class Physics : MonoBehaviour
         acceleration = (force / mass);
         friction = (miu * normalForce);
 
+       airFriction = airFrictionConstant * 0.5f * airDensity * (radius * radius) / 4;
+       
     }
 
     // Update is called once per frame
     void Update()
     {
-      
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            acceleration = (force / mass);
-            speed = 0;
-        }
-
         acceleration -= friction;     
+        acceleration -= airFriction;
 
         speed += acceleration * Time.deltaTime;
 
@@ -44,9 +46,22 @@ public class Physics : MonoBehaviour
             speed = 0;
         }
 
-        transform.position += new Vector3(0,0,2) * (speed * Time.deltaTime);
+        transform.position += direction * (speed * Time.deltaTime);
         
     }
+
+    public void HitByCue(Vector3 force)
+    {
+        if (!isStatic)
+        {
+            direction.z = 0;
+
+            this.direction = force.normalized;
+
+            acceleration = Mathf.Abs(force.magnitude) / mass;
+        }
+    }
+
 
     private void OnDrawGizmos()
     {
@@ -58,28 +73,43 @@ public class Physics : MonoBehaviour
 
     public void OnCollisionBallToBall(Physics other)
     {
-        //if (other.tag == )
-        //{
-
-        //}
-
-        acceleration -= friction;
-
-        speed += acceleration * Time.deltaTime;
-
-        if (speed <= 0)
+        if (gameObject.tag == "Ball" && other.tag == "Ball")
         {
-            speed = 0;
+            float distance = Vector3.Distance(gameObject.transform.position, other.gameObject.transform.position);
+
+            normal = (other.transform.position - transform.position).normalized;
+            depth = radius + other.radius - distance;
+
+            Vector3 normalForceA = -normal * Mathf.Abs((mass * acceleration) - (other.mass * other.acceleration)) / 2;
+
+            Vector3 directionForceA = direction * (mass * acceleration) / 2;
+
+            Vector3 resultA = (normalForceA + directionForceA);
+
+            if (!isStatic)
+            {
+                transform.position += (-normal * depth / 2);
+            }
+
+            HitByCue(resultA);
         }
-
-        other.transform.position -= new Vector3(1, 0, 0) * (speed * Time.deltaTime);
-
 
     }
 
-    public void OnCollisionBallToWall(Physics other)
+    public void OnCollisionBallToWall(Physics other, Vector3 normal, float depth)
     {
-        other.transform.position -= new Vector3(0, 0, 2) * (speed * Time.deltaTime);
+        if (gameObject.tag == "Ball" && other.tag == "Walls")
+        {
+            Vector3 directionForceA = direction * (mass * acceleration) / 2;
 
+            Vector3 resultA = Vector3.Reflect(directionForceA, -normal);
+
+            if (!isStatic)
+            {
+                transform.position += (-normal * depth);
+            }
+
+            HitByCue(resultA);
+        }
     }
 }
